@@ -1,5 +1,7 @@
 package com.nick.patternlocklibrary.pattern;
 
+import android.support.annotation.NonNull;
+
 import com.nick.patternlocklibrary.widget.PatternMode;
 
 /**
@@ -8,8 +10,21 @@ import com.nick.patternlocklibrary.widget.PatternMode;
  */
 public abstract class PatternSettingsActivity extends PatternLockActivity {
 
+    @NonNull
     @Override
     protected PatternLockFragment onCreatePattenFragment() {
-        return PatternSettingsFragment.getInstance(this).setPatternMode(PatternMode.EDIT);
+        return new PatternSettingsFragment().setPatternMode(PatternMode.EDIT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void removePatternLock() {
+        super.removePatternLock();
+        finish();
     }
 }

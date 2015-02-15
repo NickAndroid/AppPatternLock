@@ -2,4 +2,10 @@
 <resources>
     <string name="app_name">lib</string>
     <string name="draw_to_unlock">Draw pattern to unlock</string>
+    <string name="button_continue">CONTINUE</string>
+    <string name="button_cancel">CANCEL</string>
+    <string name="tips_point_count">Should more than three</string>
+    <string name="tips_draw_again">Click continue to draw again</string>
+    <string name="tips_not_match">Patterns do not match, try again</string>
+    <string name="tips_pattern_record">Pattern record</string>
 </resources>

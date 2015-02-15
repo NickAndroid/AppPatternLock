@@ -24,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Debug;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,6 +33,7 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.nick.patternlocklibrary.R;
@@ -294,6 +296,12 @@ public class LockPatternView extends View {
                 mCellStates[i][j] = new CellState();
                 mCellStates[i][j].size = mDotSize;
             }
+        }
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(), android.R.interpolator.fast_out_slow_in);
+            mLinearOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(), android.R.interpolator.linear_out_slow_in);
+            return;
         }
 
         mFastOutSlowInInterpolator = new PathInterpolator(0.4f, 0f, 0.2f, 1f);
@@ -1022,7 +1030,7 @@ public class LockPatternView extends View {
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         return new SavedState(superState,
-                PatternUtils.patternToString(mPattern),
+                new PatternUtils().patternToString(mPattern),
                 mPatternDisplayMode.ordinal(), mInputEnabled, mInStealthMode,
                 mEnableHapticFeedback);
     }
@@ -1032,7 +1040,7 @@ public class LockPatternView extends View {
         final SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         setPattern(DisplayMode.Correct,
-                PatternUtils.stringToPattern(ss.getSerializedPattern()));
+                new PatternUtils().stringToPattern(ss.getSerializedPattern()));
         mPatternDisplayMode = DisplayMode.values()[ss.getDisplayMode()];
         mInputEnabled = ss.isInputEnabled();
         mInStealthMode = ss.isInStealthMode();

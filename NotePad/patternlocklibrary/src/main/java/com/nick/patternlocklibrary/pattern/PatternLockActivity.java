@@ -1,6 +1,7 @@
 package com.nick.patternlocklibrary.pattern;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 
@@ -21,7 +22,7 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     private PreferenceHelper mPreferenceHelper;
 
     @Override
-    protected final void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_AppCompat_Light);
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
@@ -49,7 +50,7 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
         }
     }
 
-    protected abstract PatternLockFragment onCreatePattenFragment();
+    protected abstract @NonNull PatternLockFragment onCreatePattenFragment();
 
     protected void removeLock() {
         if (mActivityAlive && mLockFragment != null
@@ -58,7 +59,7 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
             getSupportFragmentManager()
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                    .setCustomAnimations(R.anim.slide_down,
+                    .setCustomAnimations(0,
                             getTransactionAnimation())
                     .remove(mLockFragment)
                     .commit();
@@ -74,11 +75,8 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     @Override
     public void onBackPressed() {
         if (mLockFragment != null && mLockFragment.isVisible()) {
-            if (mLockFragment.onBackPressed()) {
-                return;
-            }
+            mLockFragment.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     @Override

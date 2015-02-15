@@ -15,7 +15,7 @@ public class PatternUtils {
      * @param string The pattern serialized with {@link #patternToString}
      * @return The pattern.
      */
-    public static List<LockPatternView.Cell> stringToPattern(String string) {
+    public List<LockPatternView.Cell> stringToPattern(String string) {
         List<LockPatternView.Cell> result = new ArrayList<LockPatternView.Cell>();
 
         final byte[] bytes = string.getBytes();
@@ -32,7 +32,7 @@ public class PatternUtils {
      * @param pattern The pattern.
      * @return The pattern in string form.
      */
-    public static String patternToString(List<LockPatternView.Cell> pattern) {
+    public String patternToString(List<LockPatternView.Cell> pattern) {
         if (pattern == null) {
             return "";
         }

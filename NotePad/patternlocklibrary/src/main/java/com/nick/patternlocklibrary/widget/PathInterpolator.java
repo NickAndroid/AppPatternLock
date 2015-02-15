@@ -100,7 +100,7 @@ public class PathInterpolator implements Interpolator {
         Class cls = Path.class;
         Object obj = null;
         try {
-            Method method = cls.getMethod("approximate", Float.TYPE);
+            Method method = cls.getDeclaredMethod("approximate", Float.TYPE);
             method.setAccessible(true);
             obj = method.invoke(path, PRECISION);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -117,6 +117,8 @@ public class PathInterpolator implements Interpolator {
                 e.printStackTrace();
             }
 
+        } else {
+            Log.d(PathInterpolator.class.getName(), "Failed to initPath.");
         }
 
         int numPoints = pointComponents.length / 3;
