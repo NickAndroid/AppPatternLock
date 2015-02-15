@@ -2,4 +2,5 @@
 <resources>
     <dimen name="view_margin">20dip</dimen>
     <dimen name="view_margin_small">15dip</dimen>
+    <dimen name="divider_margin_huge">40dip</dimen>
 </resources>

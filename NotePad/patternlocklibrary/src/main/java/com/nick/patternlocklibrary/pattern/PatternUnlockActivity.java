@@ -2,6 +2,7 @@ package com.nick.patternlocklibrary.pattern;
 
 import android.support.annotation.NonNull;
 
+import com.nick.patternlocklibrary.R;
 import com.nick.patternlocklibrary.widget.PatternMode;
 
 /**
@@ -19,5 +20,22 @@ public abstract class PatternUnlockActivity extends PatternLockActivity {
     @Override
     public void onPatternMatch() {
         finish();
+    }
+
+    @Override
+    public void onPatternError() {
+        super.onPatternError();
+    }
+
+    @Override
+    protected boolean getIsLockEnabled() {
+       return true;
+    }
+
+    @Override
+    protected int getThemeOverlay() {
+        return getIsLockEnabled()
+                ? R.style.Theme_AppCompat_Light_NoActionBar
+                : R.style.Theme_AppCompat_Light;
     }
 }

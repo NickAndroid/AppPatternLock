@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white">
+                android:layout_height="match_parent">
 
     <com.nick.patternlocklibrary.widget.LockPatternView
         android:id="@+id/pattern"
@@ -19,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_margin"
-        android:src="@drawable/security_lock"/>
+        android:src="@drawable/unlocked"/>
 
     <TextView
         android:id="@+id/tips"
@@ -28,8 +27,21 @@
         android:layout_below="@+id/lock"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_margin"
-        android:text="@string/draw_to_unlock"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_marginLeft="@dimen/divider_margin_huge"
+        android:layout_marginRight="@dimen/divider_margin_huge"
+        android:layout_marginTop="@dimen/divider_margin_huge"
+        android:layout_below="@+id/tips"
+        android:background="@color/divider_color"/>
+
+    <FrameLayout
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

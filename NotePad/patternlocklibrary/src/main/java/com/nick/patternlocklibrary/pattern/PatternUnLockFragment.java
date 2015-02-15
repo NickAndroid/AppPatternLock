@@ -19,6 +19,7 @@ public class PatternUnLockFragment extends PatternLockFragment {
 
     private static final int REDRAW_DELAY = 1000;
     private static int PER_RETRY_DELAY = 60 * 1000;//ms
+    private static int WAIT_TIME_FACTOR = 2;
 
     private int mTriedCount = 0;
     private int mErrorTimes = 0;
@@ -56,6 +57,7 @@ public class PatternUnLockFragment extends PatternLockFragment {
             }
             if (patStr.equals(mSavedPattern)) {
                 getPatternView().setDisplayMode(LockPatternView.DisplayMode.Correct);
+                getLockLogoView().setImageResource(getUnlockLogoId());
                 getAnimUtils().runFlipHorizonAnimation(getLockLogoView(), new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -101,8 +103,11 @@ public class PatternUnLockFragment extends PatternLockFragment {
                         }
                     });
                 } else {
+                    maskInterface();
+                    getLockCallback().onPatternError();
                     mErrorTimes++;
-                    mPendingWaitTimes = mErrorTimes;
+                    mPendingWaitTimes = mErrorTimes * WAIT_TIME_FACTOR;
+                    getPatternView().clearPattern();
                     if (mHandler == null) {
                         mHandler = new Handler();
                     }
@@ -128,7 +133,7 @@ public class PatternUnLockFragment extends PatternLockFragment {
     protected void initView() {
         super.initView();
         getPatternView().setOnPatternListener(new PatterListener());
-        getAnimUtils().animateTextView(getTipView(), R.string.draw_to_unlock);
+        getTipView().setText(R.string.draw_to_unlock);
     }
 
     private void onTik() {
@@ -136,6 +141,17 @@ public class PatternUnLockFragment extends PatternLockFragment {
         mPendingWaitTimes = 0;
         getPatternView().enableInput();
         getAnimUtils().animateTextView(getTipView(), R.string.draw_to_unlock);
+        removeMask();
+    }
+
+    private void maskInterface() {
+        getMaskView().startAnimation(getAnimUtils().getShowAnim());
+        getMaskView().setBackgroundColor(getRes().getColor(R.color.trans_dark));
+    }
+
+    private void removeMask() {
+        getMaskView().startAnimation(getAnimUtils().getDismissAnim());
+        getMaskView().setBackgroundColor(getRes().getColor(android.R.color.transparent));
     }
 
     private String retrieveWaitStr() {

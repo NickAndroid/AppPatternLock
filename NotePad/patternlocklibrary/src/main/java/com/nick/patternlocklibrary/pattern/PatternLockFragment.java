@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class PatternLockFragment extends Fragment {
     private Resources mRes;
 
     private View mRootView;
+    private FrameLayout mMaskView;
     private TextView mTipView;
     private ImageView mLockLogoView;
     private LockPatternView mPatternView;
@@ -55,6 +57,8 @@ public class PatternLockFragment extends Fragment {
     private PatternLockCallback mLockCallback;
 
     private PatternMode mPatternMode;
+
+    private int mUnlockLogoId, mLockLogoId;
 
     @Override
     public void onAttach(Activity activity) {
@@ -99,6 +103,8 @@ public class PatternLockFragment extends Fragment {
         mPatternView.setSaveEnabled(false);
         mTipView = (TextView) mRootView.findViewById(R.id.tips);
         mLockLogoView = (ImageView) mRootView.findViewById(R.id.lock);
+        mLockLogoView.setImageResource(mLockLogoId);
+        mMaskView = (FrameLayout) mRootView.findViewById(R.id.mask);
     }
 
     public Resources getRes() {
@@ -121,6 +127,10 @@ public class PatternLockFragment extends Fragment {
         return mRootView;
     }
 
+    public FrameLayout getMaskView() {
+        return mMaskView;
+    }
+
     public PatternLockCallback getLockCallback() {
         return mLockCallback;
     }
@@ -137,11 +147,6 @@ public class PatternLockFragment extends Fragment {
         return mPatternMode;
     }
 
-    public PatternLockFragment setPatternMode(PatternMode mode) {
-        this.mPatternMode = PatternMode.EDIT;
-        return this;
-    }
-
     public AnimateUtils getAnimUtils() {
         return mAnimUtils;
     }
@@ -152,5 +157,28 @@ public class PatternLockFragment extends Fragment {
 
     public void die() {
         mPatternView.disableInput();
+    }
+
+    public PatternLockFragment setPatternMode(PatternMode mode) {
+        this.mPatternMode = PatternMode.EDIT;
+        return this;
+    }
+
+    public PatternLockFragment setLockLogoId(int lockLogoId) {
+        this.mLockLogoId = lockLogoId;
+        return this;
+    }
+
+    public PatternLockFragment setUnlockLogoId(int unLockLogoId) {
+        this.mUnlockLogoId = unLockLogoId;
+        return this;
+    }
+
+    public int getLockLogoId() {
+        return mLockLogoId;
+    }
+
+    public int getUnlockLogoId() {
+        return mUnlockLogoId;
     }
 }

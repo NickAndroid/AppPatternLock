@@ -22,8 +22,16 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     private PreferenceHelper mPreferenceHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_AppCompat_Light);
+    protected final void onCreate(Bundle savedInstanceState) {
+
+        if (getThemeOverlay() > 0) {
+            setTheme(getThemeOverlay());
+        } else if (hideActionBar()) {
+                setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
+            } else {
+                setTheme(R.style.Theme_AppCompat_Light);
+            }
+
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
         initInternal();
@@ -42,9 +50,11 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
 
     protected void checkLockState() {
         if (mLockFragment == null) {
-            mLockFragment = onCreatePattenFragment();
+            mLockFragment = onCreatePattenFragment()
+                    .setLockLogoId(getLockedLogoId())
+            .setUnlockLogoId(getUnLockLogId());
         }
-        if (mActivityAlive && mPreferenceHelper.isPatternLockActivate()) {
+        if (mActivityAlive && getIsLockEnabled()) {
             getSupportFragmentManager().beginTransaction()
                     .replace(getContainerId(), mLockFragment).commit();
         }
@@ -70,6 +80,22 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
 
     protected int getTransactionAnimation() {
         return R.anim.slide_down;
+    }
+
+    protected boolean hideActionBar() {
+        return false;
+    }
+
+    protected int getThemeOverlay() {
+        return -1;
+    }
+
+    protected int getUnLockLogId() {
+        return R.drawable.unlocked;
+    }
+
+    protected int getLockedLogoId() {
+        return R.drawable.unlocked;
     }
 
     @Override
@@ -121,6 +147,10 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     @Override
     public void onPatternError() {
 
+    }
+
+    protected boolean getIsLockEnabled() {
+        return  mPreferenceHelper.isPatternLockActivate();
     }
 
 }

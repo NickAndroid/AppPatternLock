@@ -95,4 +95,12 @@ public class AnimateUtils {
         mShakeAnim.setAnimationListener(listener);
         v.startAnimation(mShakeAnim);
     }
+
+    public AlphaAnimation getDismissAnim() {
+        return mDismissAnim;
+    }
+
+    public AlphaAnimation getShowAnim() {
+        return mShowAnim;
+    }
 }

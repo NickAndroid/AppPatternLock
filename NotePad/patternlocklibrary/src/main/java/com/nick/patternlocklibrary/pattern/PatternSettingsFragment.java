@@ -140,6 +140,6 @@ public class PatternSettingsFragment extends PatternLockFragment {
     protected void initView() {
         super.initView();
         getPatternView().setOnPatternListener(new PatterListener());
-        getAnimUtils().animateTextView(getTipView(), R.string.draw_pattern);
+        getTipView().setText(R.string.draw_pattern);
     }
 }
