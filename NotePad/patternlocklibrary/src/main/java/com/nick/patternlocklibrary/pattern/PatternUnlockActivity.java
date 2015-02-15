@@ -13,6 +13,11 @@ public abstract class PatternUnlockActivity extends PatternLockActivity {
     @NonNull
     @Override
     protected final PatternLockFragment onCreatePattenFragment() {
-        return new PatternLockFragment().setPatternMode(PatternMode.UNLOCK);
+        return new PatternUnLockFragment().setPatternMode(PatternMode.UNLOCK);
+    }
+
+    @Override
+    public void onPatternMatch() {
+        finish();
     }
 }

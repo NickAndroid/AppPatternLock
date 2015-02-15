@@ -298,14 +298,14 @@ public class LockPatternView extends View {
             }
         }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(), android.R.interpolator.fast_out_slow_in);
             mLinearOutSlowInInterpolator = AnimationUtils.loadInterpolator(getContext(), android.R.interpolator.linear_out_slow_in);
             return;
         }
 
-        mFastOutSlowInInterpolator = new PathInterpolator(0.4f, 0f, 0.2f, 1f);
-        mLinearOutSlowInInterpolator = new PathInterpolator(0f, 0f, 0.2f, 1f);
+        mFastOutSlowInInterpolator = mLinearOutSlowInInterpolator
+                = AnimationUtils.loadInterpolator(getContext(), android.R.interpolator.accelerate_decelerate);
     }
 
     public CellState[][] getCellStates() {

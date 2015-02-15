@@ -17,6 +17,11 @@ public abstract class PatternSettingsActivity extends PatternLockActivity {
     }
 
     @Override
+    public void onPatternMatch() {
+        finish();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();

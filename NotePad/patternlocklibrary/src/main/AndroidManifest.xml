@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.nick.patternlocklibrary">
+<manifest
+    package="com.nick.patternlocklibrary"
+    >
 
-    <application></application>
+    <application>
+    </application>
 
 </manifest>

@@ -36,6 +36,8 @@ public class PatternLockFragment extends Fragment {
         abstract void onPatternSaved();
 
         abstract void onPatternError();
+
+        abstract void onPatternMatch();
     }
 
     private static final String TAG = "nick.pattern.lib";
