@@ -32,7 +32,6 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.nick.patternlocklibrary.R;
@@ -297,10 +296,8 @@ public class LockPatternView extends View {
             }
         }
 
-        mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(context,
-                android.R.interpolator.fast_out_slow_in);
-        mLinearOutSlowInInterpolator = AnimationUtils.loadInterpolator(context,
-                android.R.interpolator.linear_out_slow_in);
+        mFastOutSlowInInterpolator = new PathInterpolator(0.4f, 0f, 0.2f, 1f);
+        mLinearOutSlowInInterpolator = new PathInterpolator(0f, 0f, 0.2f, 1f);
     }
 
     public CellState[][] getCellStates() {
