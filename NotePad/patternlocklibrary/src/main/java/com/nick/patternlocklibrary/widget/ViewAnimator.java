@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import com.nick.patternlocklibrary.R;
 
-public class AnimateUtils {
+public class ViewAnimator {
 
     private AlphaAnimation mDismissAnim, mShowAnim;
     private Animation mShakeAnim;
 
     private Resources mRes;
 
-    public AnimateUtils(Context context) {
+    public ViewAnimator(Context context) {
         init(context);
     }
 

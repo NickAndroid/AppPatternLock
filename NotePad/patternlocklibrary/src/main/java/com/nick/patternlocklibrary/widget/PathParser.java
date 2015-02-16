@@ -75,7 +75,7 @@ public class PathParser {
             return null;
         }
         PathDataNode[] copy = new PathDataNode[source.length];
-        for (int i = 0; i < source.length; i ++) {
+        for (int i = 0; i < source.length; i++) {
             copy[i] = new PathDataNode(source[i]);
         }
         return copy;
@@ -83,7 +83,7 @@ public class PathParser {
 
     /**
      * @param nodesFrom The source path represented in an array of PathDataNode
-     * @param nodesTo The target path represented in an array of PathDataNode
+     * @param nodesTo   The target path represented in an array of PathDataNode
      * @return whether the <code>nodesFrom</code> can morph into <code>nodesTo</code>
      */
     public static boolean canMorph(PathDataNode[] nodesFrom, PathDataNode[] nodesTo) {
@@ -95,7 +95,7 @@ public class PathParser {
             return false;
         }
 
-        for (int i = 0; i < nodesFrom.length; i ++) {
+        for (int i = 0; i < nodesFrom.length; i++) {
             if (nodesFrom[i].mType != nodesTo[i].mType
                     || nodesFrom[i].mParams.length != nodesTo[i].mParams.length) {
                 return false;
@@ -112,9 +112,9 @@ public class PathParser {
      * @param source The source path represented in an array of PathDataNode
      */
     public static void updateNodes(PathDataNode[] target, PathDataNode[] source) {
-        for (int i = 0; i < source.length; i ++) {
+        for (int i = 0; i < source.length; i++) {
             target[i].mType = source[i].mType;
-            for (int j = 0; j < source[i].mParams.length; j ++) {
+            for (int j = 0; j < source[i].mParams.length; j++) {
                 target[i].mParams[j] = source[i].mParams[j];
             }
         }
@@ -192,10 +192,11 @@ public class PathParser {
 
     /**
      * Calculate the position of the next comma or space or negative sign
-     * @param s the string to search
-     * @param start the position to start searching
+     *
+     * @param s      the string to search
+     * @param start  the position to start searching
      * @param result the result of the extraction, including the position of the
-     * the starting position of next number, whether it is ending with a '-'.
+     *               the starting position of next number, whether it is ending with a '-'.
      */
     private static void extract(String s, int start, ExtractFloatResult result) {
         // Now looking for ' ', ',' or '-' from the start.
@@ -265,11 +266,11 @@ public class PathParser {
          * <code>fraction</code>.
          *
          * @param nodeFrom The start value as a PathDataNode.
-         * @param nodeTo The end value as a PathDataNode
+         * @param nodeTo   The end value as a PathDataNode
          * @param fraction The fraction to interpolate.
          */
         public void interpolatePathDataNode(PathDataNode nodeFrom,
-                PathDataNode nodeTo, float fraction) {
+                                            PathDataNode nodeTo, float fraction) {
             for (int i = 0; i < nodeFrom.mParams.length; i++) {
                 mParams[i] = nodeFrom.mParams[i] * (1 - fraction)
                         + nodeTo.mParams[i] * fraction;
@@ -277,7 +278,7 @@ public class PathParser {
         }
 
         private static void addCommand(Path path, float[] current,
-                char previousCmd, char cmd, float[] val) {
+                                       char previousCmd, char cmd, float[] val) {
 
             int incr = 2;
             float currentX = current[0];
@@ -500,15 +501,15 @@ public class PathParser {
         }
 
         private static void drawArc(Path p,
-                float x0,
-                float y0,
-                float x1,
-                float y1,
-                float a,
-                float b,
-                float theta,
-                boolean isMoreThanHalf,
-                boolean isPositiveArc) {
+                                    float x0,
+                                    float y0,
+                                    float x1,
+                                    float y1,
+                                    float a,
+                                    float b,
+                                    float theta,
+                                    boolean isMoreThanHalf,
+                                    boolean isPositiveArc) {
 
             /* Convert rotation angle from degrees to radians */
             double thetaD = Math.toRadians(theta);
@@ -579,27 +580,27 @@ public class PathParser {
         /**
          * Converts an arc to cubic Bezier segments and records them in p.
          *
-         * @param p The target for the cubic Bezier segments
-         * @param cx The x coordinate center of the ellipse
-         * @param cy The y coordinate center of the ellipse
-         * @param a The radius of the ellipse in the horizontal direction
-         * @param b The radius of the ellipse in the vertical direction
-         * @param e1x E(eta1) x coordinate of the starting point of the arc
-         * @param e1y E(eta2) y coordinate of the starting point of the arc
+         * @param p     The target for the cubic Bezier segments
+         * @param cx    The x coordinate center of the ellipse
+         * @param cy    The y coordinate center of the ellipse
+         * @param a     The radius of the ellipse in the horizontal direction
+         * @param b     The radius of the ellipse in the vertical direction
+         * @param e1x   E(eta1) x coordinate of the starting point of the arc
+         * @param e1y   E(eta2) y coordinate of the starting point of the arc
          * @param theta The angle that the ellipse bounding rectangle makes with horizontal plane
          * @param start The start angle of the arc on the ellipse
          * @param sweep The angle (positive or negative) of the sweep of the arc on the ellipse
          */
         private static void arcToBezier(Path p,
-                double cx,
-                double cy,
-                double a,
-                double b,
-                double e1x,
-                double e1y,
-                double theta,
-                double start,
-                double sweep) {
+                                        double cx,
+                                        double cy,
+                                        double a,
+                                        double b,
+                                        double e1x,
+                                        double e1y,
+                                        double theta,
+                                        double start,
+                                        double sweep) {
             // Taken from equations at: http://spaceroots.org/documents/ellipse/node8.html
             // and http://www.spaceroots.org/documents/ellipse/node22.html
 

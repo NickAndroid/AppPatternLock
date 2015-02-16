@@ -1,4 +1,4 @@
-package com.nick.patternlocklibrary.manager;
+package com.nick.notepad;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -36,14 +36,14 @@ public class PreferenceHelper {
     public boolean isPatternLockActivate() {
         SharedPreferences s = mContext.getSharedPreferences(
                 ACTIVATE_PATTERN_LOCK, Context.MODE_PRIVATE);
-        return s.getBoolean(ACTIVATE_PATTERN_LOCK, true);
+        return s.getBoolean(ACTIVATE_PATTERN_LOCK, false);
     }
 
     public void setPatternLockActivate(boolean active) {
         SharedPreferences s = mContext.getSharedPreferences(
                 ACTIVATE_PATTERN_LOCK, Context.MODE_PRIVATE);
         Editor editor = s.edit();
-        editor.putBoolean(SAVED_PATTERN_LOCK, active);
+        editor.putBoolean(ACTIVATE_PATTERN_LOCK, active);
         editor.apply();
     }
 }

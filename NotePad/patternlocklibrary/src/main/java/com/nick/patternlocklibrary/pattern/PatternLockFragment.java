@@ -13,11 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nick.patternlocklibrary.R;
-import com.nick.patternlocklibrary.manager.PreferenceHelper;
-import com.nick.patternlocklibrary.widget.AnimateUtils;
 import com.nick.patternlocklibrary.widget.LockPatternView;
 import com.nick.patternlocklibrary.widget.PatternMode;
 import com.nick.patternlocklibrary.widget.PatternUtils;
+import com.nick.patternlocklibrary.widget.ViewAnimator;
+
+import java.util.List;
 
 /**
  * Email: nick_guo@foxmail.com
@@ -27,18 +28,47 @@ public class PatternLockFragment extends Fragment {
 
     public static final int MIN_POINT_COUNT = 3;
     public static final int MAX_POINT_COUNT = 9;
-    public static final int MAX_RETTY_COUNT = 5;
+    public static final int MAX_RETRY_COUNT = 5;
 
     public interface PatternLockCallback {
-        abstract void removePatternLock();
 
+        /**
+         * Called when pattern view shown.
+         */
         abstract void onPatternLockShow();
 
-        abstract void onPatternSaved();
+        /**
+         * Called when pattern view removed.
+         */
+        abstract void onPatternLockRemoved();
 
+        /**
+         * Called every time pattern draw error times over MIN.
+         */
         abstract void onPatternError();
 
+        /**
+         * Called when the pattern from user valid.
+         *
+         * @see #isPatternValid(java.util.List)
+         */
         abstract void onPatternMatch();
+
+        /**
+         * Called when in pattern settings activity, that user has successfully
+         * created a pattern, We can save this pattern.
+         *
+         * @param pattern Created pattern.
+         */
+        abstract void onPatternCreated(List<LockPatternView.Cell> pattern);
+
+        /**
+         * @param pattern The pattern from user.
+         * @return If the pattern from user is valid or correct, if true,
+         * we will unlock it, and call the
+         * @see #onPatternMatch()
+         */
+        abstract boolean isPatternValid(List<LockPatternView.Cell> pattern);
     }
 
     private static final String TAG = "nick.pattern.lib";
@@ -51,8 +81,7 @@ public class PatternLockFragment extends Fragment {
     private ImageView mLockLogoView;
     private LockPatternView mPatternView;
     private PatternUtils mPatternUtils;
-    private AnimateUtils mAnimUtils;
-    private PreferenceHelper mPreferenceHelper;
+    private ViewAnimator mAnimUtils;
 
     private PatternLockCallback mLockCallback;
 
@@ -73,12 +102,16 @@ public class PatternLockFragment extends Fragment {
         mRes = activity.getResources();
     }
 
-    public boolean onBackPressed() {
-        if (isReadyToBeRemoved()) {
-            mLockCallback.removePatternLock();
-            return true;
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mLockCallback != null) {
+            mLockCallback.onPatternLockRemoved();
         }
-        return false;
+    }
+
+    public boolean onBackPressed() {
+        return isReadyToBeRemoved();
     }
 
     @Override
@@ -97,8 +130,7 @@ public class PatternLockFragment extends Fragment {
 
     protected void initView() {
         mPatternUtils = new PatternUtils();
-        mAnimUtils = new AnimateUtils(getActivity());
-        mPreferenceHelper = new PreferenceHelper(getActivity());
+        mAnimUtils = new ViewAnimator(getActivity());
         mPatternView = (LockPatternView) mRootView.findViewById(R.id.pattern);
         mPatternView.setSaveEnabled(false);
         mTipView = (TextView) mRootView.findViewById(R.id.tips);
@@ -135,10 +167,6 @@ public class PatternLockFragment extends Fragment {
         return mLockCallback;
     }
 
-    public PreferenceHelper getPreferenceHelper() {
-        return mPreferenceHelper;
-    }
-
     public PatternUtils getPatternUtils() {
         return mPatternUtils;
     }
@@ -147,12 +175,12 @@ public class PatternLockFragment extends Fragment {
         return mPatternMode;
     }
 
-    public AnimateUtils getAnimUtils() {
+    public ViewAnimator getAnimUtils() {
         return mAnimUtils;
     }
 
     public boolean isReadyToBeRemoved() {
-        return false;
+        return true;
     }
 
     public void die() {

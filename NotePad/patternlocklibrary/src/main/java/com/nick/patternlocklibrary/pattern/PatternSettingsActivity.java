@@ -2,7 +2,10 @@ package com.nick.patternlocklibrary.pattern;
 
 import android.support.annotation.NonNull;
 
+import com.nick.patternlocklibrary.widget.LockPatternView;
 import com.nick.patternlocklibrary.widget.PatternMode;
+
+import java.util.List;
 
 /**
  * Email: nick_guo@foxmail.com
@@ -28,8 +31,7 @@ public abstract class PatternSettingsActivity extends PatternLockActivity {
     }
 
     @Override
-    public void removePatternLock() {
-        super.removePatternLock();
-        finish();
+    public final boolean isPatternValid(List<LockPatternView.Cell> pattern) {
+        return false;
     }
 }

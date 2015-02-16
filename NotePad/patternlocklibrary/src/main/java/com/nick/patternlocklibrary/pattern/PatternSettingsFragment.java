@@ -51,10 +51,7 @@ public class PatternSettingsFragment extends PatternLockFragment {
                 getPatternView().disableInput();
                 String patStr = getPatternUtils().patternToString(pattern);
                 if (patStr.equals(mTmpPatternStr)) {
-                    getPreferenceHelper().savePattern(patStr);
-                    if (patStr.equals(getPreferenceHelper().getSavedPattern())) {
-                        Log.d(TAG, "pattern saved correct! ");
-                    }
+                    getLockCallback().onPatternCreated(pattern);
                     getPatternView().setDisplayMode(LockPatternView.DisplayMode.Correct);
                     getAnimUtils().runFlipHorizonAnimation(getLockLogoView(), new Animator.AnimatorListener() {
                         @Override

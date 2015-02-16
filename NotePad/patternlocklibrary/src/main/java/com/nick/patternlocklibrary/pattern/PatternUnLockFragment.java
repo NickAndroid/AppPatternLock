@@ -27,8 +27,6 @@ public class PatternUnLockFragment extends PatternLockFragment {
 
     private Handler mHandler;
 
-    private String mSavedPattern;
-
     private class PatterListener implements LockPatternView.OnPatternListener {
 
         @Override
@@ -51,13 +49,8 @@ public class PatternUnLockFragment extends PatternLockFragment {
 
             Log.d(TAG, "onPatternDetected");
             getPatternView().disableInput();
-            String patStr = getPatternUtils().patternToString(pattern);
-            if (mSavedPattern == null) {
-                mSavedPattern = getPreferenceHelper().getSavedPattern();
-            }
-            if (patStr.equals(mSavedPattern)) {
+            if (getLockCallback().isPatternValid(pattern)) {
                 getPatternView().setDisplayMode(LockPatternView.DisplayMode.Correct);
-                getLockLogoView().setImageResource(getUnlockLogoId());
                 getAnimUtils().runFlipHorizonAnimation(getLockLogoView(), new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -66,6 +59,8 @@ public class PatternUnLockFragment extends PatternLockFragment {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        getLockLogoView().setImageResource(getUnlockLogoId());
+                        getPatternView().clearPattern();
                         getLockCallback().onPatternMatch();
                     }
 
@@ -81,7 +76,7 @@ public class PatternUnLockFragment extends PatternLockFragment {
                 });
             } else {
                 mTriedCount++;
-                if (mTriedCount <= MAX_RETTY_COUNT) {
+                if (mTriedCount <= MAX_RETRY_COUNT) {
                     getPatternView().setDisplayMode(LockPatternView.DisplayMode.Wrong);
                     getAnimUtils().animateTextView(getTipView(), R.string.tips_not_match);
                     getAnimUtils().shakeView(getLockLogoView(), new Animation.AnimationListener() {

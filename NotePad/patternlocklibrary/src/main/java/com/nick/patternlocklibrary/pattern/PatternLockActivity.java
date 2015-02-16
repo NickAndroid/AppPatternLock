@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 
 import com.nick.patternlocklibrary.R;
-import com.nick.patternlocklibrary.manager.PreferenceHelper;
+import com.nick.patternlocklibrary.widget.PatternUtils;
 
 /**
  * Email: nick_guo@foxmail.com
@@ -17,9 +17,11 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
 
     private boolean mActivityAlive;
 
+    private boolean mLockShowing;
+
     private PatternLockFragment mLockFragment;
 
-    private PreferenceHelper mPreferenceHelper;
+    private PatternUtils mPatternUtils;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -27,15 +29,14 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
         if (getThemeOverlay() > 0) {
             setTheme(getThemeOverlay());
         } else if (hideActionBar()) {
-                setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
-            } else {
-                setTheme(R.style.Theme_AppCompat_Light);
-            }
+            setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
+        } else {
+            setTheme(R.style.Theme_AppCompat_Light);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
         initInternal();
-        checkLockState();
         doOnCreate();
     }
 
@@ -44,23 +45,24 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     protected abstract int getContentViewId();
 
     private void initInternal() {
-        mPreferenceHelper = new PreferenceHelper(this);
         mActivityAlive = true;
     }
 
     protected void checkLockState() {
-        if (mLockFragment == null) {
-            mLockFragment = onCreatePattenFragment()
-                    .setLockLogoId(getLockedLogoId())
-            .setUnlockLogoId(getUnLockLogId());
-        }
-        if (mActivityAlive && getIsLockEnabled()) {
+        if (mActivityAlive && getIsLockEnabled() && !mLockShowing) {
+            if (mLockFragment == null) {
+                mLockFragment = onCreatePattenFragment()
+                        .setLockLogoId(getLockedLogoId())
+                        .setUnlockLogoId(getUnLockLogId());
+            }
             getSupportFragmentManager().beginTransaction()
                     .replace(getContainerId(), mLockFragment).commit();
         }
     }
 
-    protected abstract @NonNull PatternLockFragment onCreatePattenFragment();
+    protected abstract
+    @NonNull
+    PatternLockFragment onCreatePattenFragment();
 
     protected void removeLock() {
         if (mActivityAlive && mLockFragment != null
@@ -115,6 +117,7 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     protected void onResume() {
         super.onResume();
         mActivityAlive = true;
+        checkLockState();
     }
 
     @Override
@@ -130,18 +133,13 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void removePatternLock() {
-        removeLock();
-    }
-
-    @Override
     public void onPatternLockShow() {
-
+        mLockShowing = true;
     }
 
     @Override
-    public void onPatternSaved() {
-
+    public void onPatternLockRemoved() {
+        mLockShowing = false;
     }
 
     @Override
@@ -150,7 +148,13 @@ public abstract class PatternLockActivity extends ActionBarActivity implements
     }
 
     protected boolean getIsLockEnabled() {
-        return  mPreferenceHelper.isPatternLockActivate();
+        return true;
     }
 
+    public PatternUtils getPatternUtils() {
+        if (mPatternUtils == null) {
+            mPatternUtils = new PatternUtils();
+        }
+        return mPatternUtils;
+    }
 }
